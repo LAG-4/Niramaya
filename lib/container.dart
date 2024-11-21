@@ -34,6 +34,7 @@ class _ContainerScreenState extends State<ContainerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff8f4f3),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           signOutUser();
@@ -44,61 +45,76 @@ class _ContainerScreenState extends State<ContainerScreen> {
         color: Color(0xFFFFF8DB), // Set background color
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-            childAspectRatio: 1 / 1, // Adjust aspect ratio to reduce height
-            children: <Widget>[
-              _buildGridButton(
-                context,
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
+              childAspectRatio: 1 / 1,
+            ),
+            itemCount: 8, // Total number of buttons
+            itemBuilder: (context, index) {
+              // Titles and destinations for each button
+              final titles = [
                 'Chat with Dawn',
-                ChatPage(),
-              ),
-              _buildGridButton(
-                context,
                 'Diary Analysis',
-                DiaryEntryScreen(),
-              ),
-              _buildGridButton(
-                context,
                 'Guess My Mood',
-                DetectEmotion(),
-              ),
-              _buildGridButton(
-                context,
                 'Survey Based Diagnosis',
-                HomeScreen(),
-              ),
-              _buildGridButton(
-                context,
                 'Helpline Numbers',
-                Helpline(),
-              ),
-              _buildGridButton(
-                context,
                 'Profile Page',
+                'Tracker',
+                'Exercises',
+              ];
+              final destinations = [
+                ChatPage(),
+                DiaryEntryScreen(),
+                DetectEmotion(),
+                HomeScreen(),
+                Helpline(),
                 ProfilePage(testName: 'Bipolar Test'),
-              ),
-              _buildGridButton(context, 'Tracker', TrackerPage()),
-              _buildGridButton(context, 'Exercises', YouTubeScreen()),
-            ],
+                TrackerPage(),
+                YouTubeScreen(),
+              ];
+
+              return _buildGridButton(
+                context,
+                titles[index],
+                destinations[index],
+                index, // Pass the index
+              );
+            },
           ),
+
         ),
       ),
     );
   }
 
-  Widget _buildGridButton(
-      BuildContext context, String title, Widget? destination) {
+  Widget _buildGridButton(BuildContext context, String title, Widget? destination, int index) {
+    // Define the alternating colors
+    final colors = [Color(0xFF9BB168), Color(0xFFEE7E1C), Color(0xFFA18FFF)];
+    final backgroundColor = colors[index % colors.length]; // Alternate colors based on index
+
+    // List of images corresponding to each button
+    final images = [
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+      'assets/friends.png',
+
+    ];
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple.shade100,
+        backgroundColor: backgroundColor, // Set the alternating background color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        padding:
-            const EdgeInsets.all(30.0), // Reduce padding to fit text better
+        padding: const EdgeInsets.all(16.0), // Adjust padding
       ),
       onPressed: () {
         if (destination != null) {
@@ -113,17 +129,29 @@ class _ContainerScreenState extends State<ContainerScreen> {
           );
         }
       },
-      child: Center(
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18, // Increase text size
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            images[index], // Use the corresponding image
+            height: 150, // Set the height of the image
+            width: 150, // Set the width of the image
           ),
-        ),
+          const SizedBox(height: 10), // Add spacing between image and text
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16, // Adjust text size
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ],
       ),
     );
   }
+
+
 }

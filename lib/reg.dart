@@ -62,10 +62,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         context,
         MaterialPageRoute(
             builder: (context) =>
-                const LoginScreen()), // Remove the 'title' parameter
+            const LoginScreen()), // Remove the 'title' parameter
       );
     } on FirebaseAuthException catch (ex) {
-      CustomAlertBox(context, ex.code.toString());
+
     }
   }
 
@@ -86,17 +86,9 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F4F3), // Set background color here
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.7,
-              child: Image.asset(
-                'assets/chatbg7.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -106,6 +98,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Image.asset(
+                        'assets/register.png',
+                        height: 400, // Adjust size as needed
+                        width: 400,
+                      ),
+                    ),
                     ScaleTransition(
                       scale: Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
@@ -116,9 +116,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          fontSize: 35,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'poppins',
+                          color: Color(0xff4b3426),
                         ),
                       ),
                     ),
@@ -131,18 +132,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                             child: TextField(
                               controller: firstNameController,
                               decoration: InputDecoration(
-                                hintStyle: const TextStyle(color: Colors.white),
+                                hintStyle: const TextStyle(color: Colors.black),
                                 labelText: "First Name",
                                 labelStyle: const TextStyle(
-                                    color: Colors.white, fontSize: 10),
+                                    color: Colors.black, fontSize: 10,fontFamily: 'poppins'),
                                 hintText: "Enter first name",
                                 border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
+                                  borderSide: const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                               ),
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                           const SizedBox(
@@ -151,18 +151,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                             child: TextField(
                               controller: lastNameController,
                               decoration: InputDecoration(
-                                hintStyle: const TextStyle(color: Colors.white),
+                                hintStyle: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                                 labelText: "Last Name",
                                 labelStyle: const TextStyle(
-                                    color: Colors.white, fontSize: 10),
+                                    color: Colors.black, fontSize: 10),
                                 hintText: "Enter last name",
                                 border: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
+                                  borderSide: const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                               ),
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                             ),
                           ),
                         ],
@@ -174,17 +173,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       child: TextField(
                         controller: emailController,
                         decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                           labelText: "Email",
                           labelStyle: const TextStyle(
-                              color: Colors.white, fontSize: 10),
+                              color: Colors.black, fontSize: 10,fontFamily: 'poppins'),
                           hintText: "Enter email",
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25),
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -193,13 +192,13 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       child: TextField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                           labelText: "Password",
                           labelStyle: const TextStyle(
-                              color: Colors.white, fontSize: 10),
+                              color: Colors.black, fontSize: 10,fontFamily: 'poppins'),
                           hintText: "Enter password",
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25),
                           ),
                           errorText: _passwordErrorText,
@@ -208,7 +207,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                               _obscureText
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             onPressed: () {
                               setState(() {
@@ -217,7 +216,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                             },
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                         obscureText: _obscureText,
                       ),
                     ),
@@ -229,10 +228,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                         decoration: InputDecoration(
                           labelText: "Confirm Password",
                           labelStyle: const TextStyle(
-                              color: Colors.white, fontSize: 10),
+                              color: Colors.black, fontSize: 10,fontFamily: 'poppins'),
                           hintText: "Re-enter password",
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25),
                           ),
                           errorText: _passwordErrorText,
@@ -241,7 +240,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                               _obscureText
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             onPressed: () {
                               setState(() {
@@ -250,7 +249,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                             },
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
                         obscureText: _obscureText,
                       ),
                     ),
@@ -260,7 +259,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       builder: (context, child) {
                         return Transform.translate(
                           offset:
-                              Offset(0.0, 10.0 * (1 - _fadeController.value)),
+                          Offset(0.0, 10.0 * (1 - _fadeController.value)),
                           child: ElevatedButton(
                             onPressed: () {
                               registerUser(
@@ -270,7 +269,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                                 password: passwordController.text,
                               );
                             },
-                            child: const Text("Register"),
+                            child: const Text("Register",style: TextStyle(fontFamily: 'poppins',color: Colors.white,fontSize: 20),),
                           ),
                         );
                       },
@@ -285,7 +284,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                     opacity: _fadeAnimation,
                     child: const Text(
                       "Have an account?",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black,fontFamily: 'poppins'),
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -299,7 +298,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                             builder: (context) => const LoginScreen(),
                           ),
                           // ignore: avoid_types_as_parameter_names
-                          (Route) => false,
+                              (Route) => false,
                         );
                       },
                       child: const MouseRegion(
@@ -308,8 +307,9 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                           "Login",
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 18, // Increased font size
+                            fontFamily: 'poppins'
                           ),
                         ),
                       ),
@@ -318,7 +318,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -329,29 +329,4 @@ class _RegistrationScreenState extends State<RegistrationScreen>
     _fadeController.dispose();
     super.dispose();
   }
-
-  void CustomAlertBox(BuildContext context, String text) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(text),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("OK"),
-            )
-          ],
-        );
-      },
-    );
-  }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: RegistrationScreen(),
-  ));
 }

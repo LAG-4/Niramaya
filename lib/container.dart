@@ -97,14 +97,14 @@ class _ContainerScreenState extends State<ContainerScreen> {
 
     // List of images corresponding to each button
     final images = [
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
-      'assets/friends.png',
+      'assets/Chatbot.png',
+      'assets/Diary.png',
+      'assets/Mood.png',
+      'assets/Survey.png',
+      'assets/Helpline.png',
+      'assets/Profileimg.png',
+      'assets/Tracker.png',
+      'assets/Exercise.png',
 
     ];
 

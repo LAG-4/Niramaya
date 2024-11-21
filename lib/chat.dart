@@ -70,26 +70,20 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dawn'),
-      ),
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 255, 254, 211), // Start color
-              Color.fromARGB(255, 187, 233, 255), // End color
-            ],
+        title: const Text(
+          'Dawn',
+          style: TextStyle(
+            fontFamily: 'poppins',
           ),
         ),
+        backgroundColor: const Color.fromARGB(255, 34, 89, 140),
+      ),
+      body: Container(
+        color: const Color(0xFFF8F4F3), // Background color
         child: Column(
           children: [
             Expanded(
@@ -106,26 +100,30 @@ class _ChatPageState extends State<ChatPage> {
                       Flexible(
                         child: Padding(
                           padding:
-                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                           child: Container(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(12.0),
                             decoration: BoxDecoration(
                               color: isUserMessage
-                                  ? const Color.fromRGBO(136, 192, 255, 1)
-                                  : const Color.fromARGB(255, 255, 255, 255),
-                              borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0)),
+                                  ? const Color(0xFF88C0FF)
+                                  : const Color(0xFFFFFFFF),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: isUserMessage
                                 ? Text(
                               message,
                               style: const TextStyle(
-                                  color: Color.fromARGB(255, 37, 21, 65)),
+                                fontFamily: 'poppins',
+                                color: Color(0xFF251541),
+                              ),
                             )
                                 : MarkdownBody(
                               data: message,
                               styleSheet: MarkdownStyleSheet(
-                                p: const TextStyle(color: Colors.black),
+                                p: const TextStyle(
+                                  fontFamily: 'poppins',
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
@@ -137,21 +135,23 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+              color: const Color(0xFFF8F4F3),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
               child: Row(
                 children: [
                   Expanded(
                     child: TextFormField(
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 247, 249, 255),
+                        fontFamily: 'poppins',
+                        color: Color(0xFF251541),
                       ),
                       controller: _messageController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Type a message...',
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 14, 43, 86),
+                          fontFamily: 'poppins',
+                          color: Color(0xFF0E2B56),
                         ),
                       ),
                     ),
@@ -159,7 +159,7 @@ class _ChatPageState extends State<ChatPage> {
                   IconButton(
                     onPressed: _handleSendMessage,
                     icon: const Icon(Icons.send),
-                    color: const Color.fromARGB(255, 10, 50, 83),
+                    color: const Color(0xFF0A3253),
                   ),
                 ],
               ),

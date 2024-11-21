@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:niramaya/reg.dart'; // Ensure this path is correct
 import 'firstpage.dart'; // Add this import
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen>
         password: password,
       )
           .then((value) async {
-        Fluttertoast.showToast(msg: "Login Successful");
+
         // Obtain shared preferences.
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);

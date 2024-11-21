@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:niramaya/container.dart';
 import 'package:niramaya/firstpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,7 @@ void main() async {
       projectId: "nirmaya-1c7e6",
     ),
   );
+  await dotenv.load();
 
   runApp(MyApp(initialization: initialization));
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:niramaya/consts.dart';
-import 'package:niramaya/twtext.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dart_openai/dart_openai.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -13,84 +12,66 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, dynamic>> _chatHistoryInternal = [
-    {
-      'role': 'user',
-      'parts': [
-        {
-          'text':
-              'Suppose you are not Gemini, the multimodal AI model, but a mental health advisor AI named Dawn. You suggest advice for your patients. Answer like a humanoid chat assistant with a friendly, cheerful tone. Only use English language. Reply in approximately 150 words.',
-        },
-      ],
-    },
-    {
-      'role': 'model',
-      'parts': [
-        {
-          'text': 'Sure.',
-        },
-      ],
-    },
-  ];
-  final List<Map<String, String>> _chatHistoryDisplay = [];
-  late GenerativeModel _model;
+  final List<Map<String, String>> _chatHistory = [];
 
   @override
   void initState() {
     super.initState();
-    _initModel();
+    _initOpenAI();
   }
 
-  Future<void> _initModel() async {
-    const apiKey = GOOGLE_API_KEY;
-    _model = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: apiKey,
-    );
+  void _initOpenAI() {
+    OpenAI.apiKey = dotenv.env['OPEN_AI_API_KEY']!;
   }
 
-  void _handleSendMessage() async {
-    final message = _messageController.text;
+  Future<void> _handleSendMessage() async {
+    final userMessage = _messageController.text;
     _messageController.clear();
 
     setState(() {
-      _chatHistoryInternal.add({
-        'role': 'user',
-        'parts': [
-          {'text': message}
-        ],
-      });
-      _chatHistoryDisplay.add({'role': 'user', 'text': message});
+      _chatHistory.add({'role': 'user', 'text': userMessage});
     });
 
     try {
-      final content = _chatHistoryInternal
-          .map((entry) => Content.text(entry['parts'][0]['text']))
-          .toList();
-      final response = await _model.generateContent(content);
+      final systemMessage = OpenAIChatCompletionChoiceMessageModel(
+        role: OpenAIChatMessageRole.system,
+        content: "You are a friendly and supportive chatbot designed to assist users dealing with mental health challenges. Always respond in an empathetic, kind, and uplifting manner. Avoid offering clinical advice and instead encourage users to seek help from trusted professionals or support networks if needed.",
+      );
+
+      final chatMessages = [
+        systemMessage,
+        ..._chatHistory.map((message) {
+          final role = message['role'] == 'user'
+              ? OpenAIChatMessageRole.user
+              : OpenAIChatMessageRole.assistant;
+          return OpenAIChatCompletionChoiceMessageModel(
+            role: role,
+            content: message['text']!,
+          );
+        }),
+      ];
+
+      final response = await OpenAI.instance.chat.create(
+        model: "gpt-3.5-turbo",
+        messages: chatMessages,
+        maxTokens: 150,
+        temperature: 0.5,
+      );
+
+      final aiResponse = response.choices.first.message.content.trim();
 
       setState(() {
-        _chatHistoryInternal.add({
-          'role': 'model',
-          'parts': [
-            {'text': response.text}
-          ],
-        });
-        _chatHistoryDisplay
-            .add({'role': 'model', 'text': response.text!.trim()});
+        _chatHistory.add({'role': 'model', 'text': aiResponse});
       });
     } catch (e) {
       setState(() {
-        _chatHistoryInternal.add({
-          'role': 'model',
-          'parts': [
-            {'text': 'Error: $e'}
-          ],
-        });
-        _chatHistoryDisplay.add({'role': 'model', 'text': 'Error: $e'});
+        _chatHistory.add({'role': 'model', 'text': 'Error: $e'});
       });
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +94,10 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: _chatHistoryDisplay.length,
+                itemCount: _chatHistory.length,
                 itemBuilder: (context, index) {
-                  final message = _chatHistoryDisplay[index]['text']!;
-                  final isUserMessage =
-                      _chatHistoryDisplay[index]['role'] == 'user';
+                  final message = _chatHistory[index]['text']!;
+                  final isUserMessage = _chatHistory[index]['role'] == 'user';
                   return Row(
                     mainAxisAlignment: isUserMessage
                         ? MainAxisAlignment.end
@@ -126,29 +106,28 @@ class _ChatPageState extends State<ChatPage> {
                       Flexible(
                         child: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           child: Container(
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               color: isUserMessage
-                                  ? Color.fromRGBO(136, 192, 255, 1)
+                                  ? const Color.fromRGBO(136, 192, 255, 1)
                                   : const Color.fromARGB(255, 255, 255, 255),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
+                              const BorderRadius.all(Radius.circular(10.0)),
                             ),
                             child: isUserMessage
                                 ? Text(
-                                    message,
-                                    style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 37, 21, 65)),
-                                  )
-                                : TypewriterMarkdown(
-                                    text: message,
-                                    styleSheet: MarkdownStyleSheet(
-                                      p: TextStyle(color: Colors.black),
-                                    ),
-                                  ),
+                              message,
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 37, 21, 65)),
+                            )
+                                : MarkdownBody(
+                              data: message,
+                              styleSheet: MarkdownStyleSheet(
+                                p: const TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -159,20 +138,22 @@ class _ChatPageState extends State<ChatPage> {
             ),
             Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
               child: Row(
                 children: [
                   Expanded(
                     child: TextFormField(
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 247, 249, 255),
                       ),
                       controller: _messageController,
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Type a message...',
-                          labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 14, 43, 86))),
+                        border: OutlineInputBorder(),
+                        labelText: 'Type a message...',
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 14, 43, 86),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(

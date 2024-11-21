@@ -135,31 +135,12 @@ class _TrackerPageState extends State<TrackerPage> {
                   debugPrint(_medicationTimeController.text);
 
                   print(medicationDateTime);
-                  NotificationService().scheduleNotification(
-                      id: 0,
-                      title: 'Medication Reminder',
-                      body: 'Time to take the meds!',
-                      channel_id: 'medication_channel',
-                      channel_name: 'Medication Channel',
-                      scheduledNotificationDateTime: medicationDateTime);
+
                   print(sleepTime);
                   debugPrint(_sleepTimeController.text);
-                  NotificationService().scheduleNotification(
-                      id: 1,
-                      title: 'Sleep Reminder',
-                      body: 'Time to sleep!',
-                      channel_id: "bedtime_channel",
-                      channel_name: "Bed Time Channel",
-                      scheduledNotificationDateTime: sleepTime);
+
                   print(wakeUpTime);
                   debugPrint(_wakeUpTimeController.text);
-                  NotificationService().scheduleNotification(
-                      id: 2,
-                      title: 'Wakeup Reminder',
-                      body: 'Time to wake up!',
-                      channel_id: "wakeup_channel",
-                      channel_name: "Wake Up Channel",
-                      scheduledNotificationDateTime: wakeUpTime);
                 },
                 child: Text('Set Reminders'),
               ),
@@ -212,13 +193,6 @@ class ScheduleBtn extends StatelessWidget {
       child: const Text('Schedule notifications'),
       onPressed: () {
         debugPrint('Notification Scheduled for $scheduleTime');
-        NotificationService().scheduleNotification(
-            id: 0,
-            title: 'Scheduled Notification',
-            body: '$scheduleTime',
-            channel_id: "",
-            channel_name: "",
-            scheduledNotificationDateTime: scheduleTime);
       },
     );
   }

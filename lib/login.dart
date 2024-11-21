@@ -4,7 +4,6 @@ import 'package:niramaya/reg.dart'; // Ensure this path is correct
 import 'firstpage.dart'; // Add this import
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -37,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen>
   late Animation<double> _shakeAnimation;
 
   final AuthService authService =
-      AuthService(); // Instance for sending reset emails
+  AuthService(); // Instance for sending reset emails
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -142,7 +141,6 @@ class _LoginScreenState extends State<LoginScreen>
         password: password,
       )
           .then((value) async {
-
         // Obtain shared preferences.
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
@@ -153,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen>
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => FirstPage()),
-            (route) => false);
+                (route) => false);
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -184,155 +182,152 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/Login.jpg',
-              fit: BoxFit.cover,
-              color: Colors.white.withOpacity(0.5), // Apply white overlay
-              colorBlendMode: BlendMode.modulate,
-            ),
-          ),
-          // Login Form
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ScaleTransition(
-                      scale: _fadeAnimation,
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: TextField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          labelText: "Enter Email",
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                        ),
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: TextField(
-                        controller: passwordController,
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          labelText: "Enter Password",
-                          labelStyle: const TextStyle(color: Colors.black),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Checkbox(
-                          value: rememberMe,
-                          onChanged: (value) {
-                            setState(() {
-                              rememberMe = value!;
-                            });
-                          },
-                        ),
-                        const Text("Remember Me"),
-                        const Spacer(), // Align the next element to the right
-                        GestureDetector(
-                          onTap: _forgotPassword,
-                          child: const Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.black,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        loginUser(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                      },
-                      child: const Text("Login"),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
+      backgroundColor: const Color(0xFFF8F4F3), // Set the background color
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const SizedBox(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FadeTransition(
                     opacity: _fadeAnimation,
-                    child: const Text("Don't have an account?"),
+                    child: Image.asset(
+                      'assets/friends.png',
+                      height: 400, // Adjust size as needed
+                      width: 400,
+                    ),
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegistrationScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: Colors.black,
-                          decoration: TextDecoration.underline,
-                        ),
+                  ScaleTransition(
+                    scale: _fadeAnimation,
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'poppins',
+                        color: Color(0xff4b3426),
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: "Enter Email",
+                        labelStyle: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25)),
+                      ),
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        labelText: "Enter Password",
+                        labelStyle: const TextStyle(color: Colors.black,fontFamily: 'poppins'),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Checkbox(
+                        value: rememberMe,
+                        onChanged: (value) {
+                          setState(() {
+                            rememberMe = value!;
+                          });
+                        },
+                      ),
+                      const Text("Remember Me",style: TextStyle(fontFamily: 'poppins',color: Colors.grey),),
+                      const Spacer(), // Align the next element to the right
+                      GestureDetector(
+                        onTap: _forgotPassword,
+                        child: const Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'poppins'
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      loginUser(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+                    },
+                    child: const Text("Login",style: TextStyle(fontFamily: 'poppins',fontSize: 20,color: Colors.white)),
+                  ),
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: const Text("Don't have an account?",style: TextStyle(fontFamily: 'poppins',fontSize: 20,color: Colors.grey),),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegistrationScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Sign Up",
+                      style: TextStyle(fontFamily: 'poppins',fontSize: 20,color: Colors.grey)
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
